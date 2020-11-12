@@ -78,7 +78,7 @@ html {
   box-sizing: inherit; }
 
 body {
-  background: #ffffff; }
+  background: #222020; }
   body.is-preload *, body.is-preload *:before, body.is-preload *:after, body.is-resizing *, body.is-resizing *:before, body.is-resizing *:after {
     -moz-animation: none !important;
     -webkit-animation: none !important;
@@ -91,7 +91,7 @@ body {
 
 /* Type */
 body, input, select, textarea {
-  color: #7f888f;
+  color: #f0f5f8;
   font-family: "Open Sans", sans-serif;
   font-size: 13pt;
   font-weight: 400;
@@ -124,14 +124,20 @@ strong, b {
   color: #3d4449;
   font-weight: 600; }
 
+/* Updated by Rohit */
+  div {
+    color: #3d4449; }
+    
+p {
+      margin: 0 0 2em 0;
+      color: #9fa3a6; }
+
 em, i {
   font-style: italic; }
 
-p {
-  margin: 0 0 2em 0; }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #3d4449;
+  color: #f5d314;
   font-family: "Roboto Slab", serif;
   font-weight: 700;
   line-height: 1.5;
@@ -2214,7 +2220,7 @@ button,
     font-size: 0.9em;
     padding: 0.625em 0; }
     #menu ul a:hover, #menu ul span:hover {
-      color: #f56a6a; }
+      color: red; }
     #menu ul a.opener, #menu ul span.opener {
       -moz-transition: color 0.2s ease-in-out;
       -webkit-transition: color 0.2s ease-in-out;
