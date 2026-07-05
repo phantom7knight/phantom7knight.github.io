@@ -147,6 +147,7 @@ code, .kbd {
 .terminal-body .t-cmd { color: var(--text); }
 .terminal-body .t-out { color: var(--text-dim); }
 .terminal-body .t-out a { color: var(--accent); }
+.terminal-body .hl { color: var(--text); font-weight: 700; }
 
 .cursor {
   display: inline-block;

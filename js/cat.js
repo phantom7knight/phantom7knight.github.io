@@ -58,7 +58,22 @@
   let idleAnimationFrame = 0;
   let restTicks = 25; // first wander ~2.5s after load
 
+  let mouseX = null;
+  let mouseY = null;
+  let chasedMouse = false;
+  document.addEventListener("mousemove", function (e) {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
   function pickTarget() {
+    // the cat investigates the mouse cursor at least once, then now and then
+    if (mouseX !== null && (!chasedMouse || Math.random() < 0.3)) {
+      chasedMouse = true;
+      targetX = Math.min(Math.max(16, mouseX), window.innerWidth - 16);
+      targetY = Math.min(Math.max(60, mouseY), window.innerHeight - 16);
+      return;
+    }
     targetX = 32 + Math.random() * Math.max(32, window.innerWidth - 96);
     targetY = 80 + Math.random() * Math.max(32, window.innerHeight - 160);
   }
