@@ -1,78 +1,157 @@
-/* Easter egg: a tiny cat that trots around the whole page.
-   Driven by requestAnimationFrame (not CSS transitions) so it moves even
-   when the OS reduced-motion setting is on. Click it: meow + dash. */
+/* Easter egg: oneko, the classic pixel cat (sprite: CC0, github.com/adryd325/oneko.js).
+   Adapted from oneko.js — instead of chasing the mouse, this cat rests on the page
+   (sitting, licking, yawning, sleeping) and now and then wanders to a random spot
+   with proper directional run animations. Click it: meow + dash. */
 (function () {
-  const SIZE_PX = 20;
-  const WALK_SPEED = 70;   // px per second
-  const DASH_SPEED = 340;  // px per second when startled
-  const IDLE_MIN = 1500;   // ms sitting between strolls
-  const IDLE_RANGE = 4500;
-  const START_DELAY = 2500;
+  const SPRITE_URL = "/assets/img/oneko.gif";
+  const WALK_SPEED = 10;  // px per 100ms tick (~100 px/s)
+  const DASH_SPEED = 22;
+  const REST_MIN_TICKS = 50;    // 5s minimum rest between wanders
+  const REST_RANGE_TICKS = 250; // up to +25s more
 
-  const cat = document.createElement("div");
-  cat.id = "ascii-cat";
-  cat.textContent = "🐈";
-  cat.setAttribute("aria-hidden", "true");
-  Object.assign(cat.style, {
+  const spriteSets = {
+    idle: [[-3, -3]],
+    alert: [[-7, -3]],
+    scratchSelf: [[-5, 0], [-6, 0], [-7, 0]],
+    scratchWallN: [[0, 0], [0, -1]],
+    scratchWallS: [[-7, -1], [-6, -2]],
+    scratchWallE: [[-2, -2], [-2, -3]],
+    scratchWallW: [[-4, 0], [-4, -1]],
+    tired: [[-3, -2]],
+    sleeping: [[-2, 0], [-2, -1]],
+    N: [[-1, -2], [-1, -3]],
+    NE: [[0, -2], [0, -3]],
+    E: [[-3, 0], [-3, -1]],
+    SE: [[-5, -1], [-5, -2]],
+    S: [[-6, -3], [-7, -2]],
+    SW: [[-5, -3], [-6, -1]],
+    W: [[-4, -2], [-4, -3]],
+    NW: [[-1, 0], [-1, -1]],
+  };
+
+  const el = document.createElement("div");
+  el.id = "ascii-cat";
+  el.setAttribute("aria-hidden", "true");
+  Object.assign(el.style, {
+    width: "32px",
+    height: "32px",
     position: "fixed",
     left: "0",
     top: "0",
     zIndex: "5",
-    fontSize: SIZE_PX + "px",
-    lineHeight: "1",
     cursor: "pointer",
-    userSelect: "none",
-    willChange: "transform",
-    filter: "drop-shadow(0 0 4px rgba(110,232,93,0.45))",
+    imageRendering: "pixelated",
+    backgroundImage: "url(" + SPRITE_URL + ")",
   });
-  document.body.appendChild(cat);
+  document.body.appendChild(el);
 
-  let x = window.innerWidth - 50;
-  let y = window.innerHeight - 50;
-  let tx = x, ty = y;
+  let posX = window.innerWidth - 48;
+  let posY = window.innerHeight - 48;
+  let targetX = posX;
+  let targetY = posY;
   let speed = WALK_SPEED;
-  let idleUntil = performance.now() + START_DELAY;
-  let last = performance.now();
-  let bob = 0;
-  let facing = 1; // 🐈 faces left by default; scaleX(-1) faces right
+  let frameCount = 0;
+  let idleTime = 0;
+  let idleAnimation = null;
+  let idleAnimationFrame = 0;
+  let restTicks = 25; // first wander ~2.5s after load
 
   function pickTarget() {
-    tx = 15 + Math.random() * Math.max(30, window.innerWidth - 15 - SIZE_PX * 2 - 15);
-    ty = 70 + Math.random() * Math.max(30, window.innerHeight - 70 - SIZE_PX * 2 - 15);
+    targetX = 32 + Math.random() * Math.max(32, window.innerWidth - 96);
+    targetY = 80 + Math.random() * Math.max(32, window.innerHeight - 160);
   }
 
-  function render(offsetY) {
-    cat.style.transform =
-      "translate3d(" + x + "px," + (y + offsetY) + "px,0) scaleX(" + facing + ")";
-    cat.dataset.x = Math.round(x);
-    cat.dataset.y = Math.round(y);
+  function setSprite(name, frame) {
+    const sprite = spriteSets[name][frame % spriteSets[name].length];
+    el.style.backgroundPosition = sprite[0] * 32 + "px " + sprite[1] * 32 + "px";
   }
 
-  function tick(now) {
-    const dt = Math.min(0.05, (now - last) / 1000);
-    last = now;
+  function resetIdleAnimation() {
+    idleAnimation = null;
+    idleAnimationFrame = 0;
+  }
 
-    const dx = tx - x;
-    const dy = ty - y;
-    const dist = Math.hypot(dx, dy);
+  function idle() {
+    idleTime += 1;
 
-    if (dist > 1) {
-      // walking: step toward target with a little trot-bob
-      const step = Math.min(dist, speed * dt);
-      x += (dx / dist) * step;
-      y += (dy / dist) * step;
-      bob += dt * (speed > WALK_SPEED ? 30 : 16);
-      facing = dx < 0 ? 1 : -1;
-      render(Math.sin(bob) * 1.5);
-    } else if (now >= idleUntil) {
-      speed = WALK_SPEED;
-      idleUntil = now + IDLE_MIN + Math.random() * IDLE_RANGE;
-      pickTarget();
-    } else {
-      render(0); // sitting
+    if (idleTime > 10 && Math.floor(Math.random() * 150) === 0 && idleAnimation == null) {
+      const options = ["sleeping", "scratchSelf"];
+      if (posX < 32) options.push("scratchWallW");
+      if (posY < 32) options.push("scratchWallN");
+      if (posX > window.innerWidth - 32) options.push("scratchWallE");
+      if (posY > window.innerHeight - 32) options.push("scratchWallS");
+      idleAnimation = options[Math.floor(Math.random() * options.length)];
     }
 
-    requestAnimationFrame(tick);
+    switch (idleAnimation) {
+      case "sleeping":
+        if (idleAnimationFrame < 8) {
+          setSprite("tired", 0);
+          break;
+        }
+        setSprite("sleeping", Math.floor(idleAnimationFrame / 4));
+        if (idleAnimationFrame > 192) resetIdleAnimation();
+        break;
+      case "scratchWallN":
+      case "scratchWallS":
+      case "scratchWallE":
+      case "scratchWallW":
+      case "scratchSelf":
+        setSprite(idleAnimation, idleAnimationFrame);
+        if (idleAnimationFrame > 9) resetIdleAnimation();
+        break;
+      default:
+        setSprite("idle", 0);
+        return;
+    }
+    idleAnimationFrame += 1;
+  }
+
+  function frame() {
+    frameCount += 1;
+    const diffX = posX - targetX;
+    const diffY = posY - targetY;
+    const distance = Math.sqrt(diffX * diffX + diffY * diffY);
+
+    if (distance < speed || distance < 4) {
+      // arrived — rest here for a while, then pick somewhere new
+      speed = WALK_SPEED;
+      restTicks -= 1;
+      if (restTicks <= 0) {
+        restTicks = REST_MIN_TICKS + Math.random() * REST_RANGE_TICKS;
+        pickTarget();
+        return;
+      }
+      idle();
+      return;
+    }
+
+    resetIdleAnimation();
+
+    if (idleTime > 1) {
+      setSprite("alert", 0);
+      // pause a beat after being alerted before moving
+      idleTime = Math.min(idleTime, 7);
+      idleTime -= 1;
+      return;
+    }
+
+    let direction = diffY / distance > 0.5 ? "N" : "";
+    direction += diffY / distance < -0.5 ? "S" : "";
+    direction += diffX / distance > 0.5 ? "W" : "";
+    direction += diffX / distance < -0.5 ? "E" : "";
+    setSprite(direction, frameCount);
+
+    posX -= (diffX / distance) * speed;
+    posY -= (diffY / distance) * speed;
+
+    posX = Math.min(Math.max(16, posX), window.innerWidth - 16);
+    posY = Math.min(Math.max(16, posY), window.innerHeight - 16);
+
+    el.style.left = posX - 16 + "px";
+    el.style.top = posY - 16 + "px";
+    el.dataset.x = Math.round(posX);
+    el.dataset.y = Math.round(posY);
   }
 
   function meow() {
@@ -80,10 +159,9 @@
     bubble.textContent = "meow~";
     Object.assign(bubble.style, {
       position: "fixed",
-      left: "0",
-      top: "0",
+      left: posX - 16 + "px",
+      top: posY - 44 + "px",
       zIndex: "6",
-      transform: "translate3d(" + (x - 8) + "px," + (y - 26) + "px,0)",
       color: "var(--accent, #6ee85d)",
       background: "rgba(14,21,17,0.95)",
       border: "1px solid var(--border-bright, #2e4534)",
@@ -96,22 +174,36 @@
     document.body.appendChild(bubble);
     setTimeout(function () { bubble.remove(); }, 1200);
 
-    // startled: dash somewhere else right now
+    // startled: bolt somewhere else right now
     speed = DASH_SPEED;
-    idleUntil = 0;
+    idleTime = 0;
+    resetIdleAnimation();
     pickTarget();
   }
 
-  cat.addEventListener("click", meow);
+  el.addEventListener("click", meow);
 
-  render(0);
-  requestAnimationFrame(function (now) { last = now; tick(now); });
+  el.style.left = posX - 16 + "px";
+  el.style.top = posY - 16 + "px";
+  setSprite("idle", 0);
+
+  // 10 fps tick, gated on rAF like the original oneko
+  let lastTick;
+  function onAnimationFrame(timestamp) {
+    if (!el.isConnected) return;
+    if (!lastTick) lastTick = timestamp;
+    if (timestamp - lastTick > 100) {
+      lastTick = timestamp;
+      frame();
+    }
+    requestAnimationFrame(onAnimationFrame);
+  }
+  requestAnimationFrame(onAnimationFrame);
 
   window.addEventListener("resize", function () {
-    x = Math.min(x, window.innerWidth - SIZE_PX * 2);
-    y = Math.min(y, window.innerHeight - SIZE_PX * 2);
-    tx = Math.min(tx, window.innerWidth - SIZE_PX * 2);
-    ty = Math.min(ty, window.innerHeight - SIZE_PX * 2);
-    render(0);
+    posX = Math.min(posX, window.innerWidth - 16);
+    posY = Math.min(posY, window.innerHeight - 16);
+    targetX = Math.min(targetX, window.innerWidth - 16);
+    targetY = Math.min(targetY, window.innerHeight - 16);
   });
 })();
