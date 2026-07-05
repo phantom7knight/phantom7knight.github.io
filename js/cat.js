@@ -42,6 +42,8 @@
     cursor: "pointer",
     imageRendering: "pixelated",
     backgroundImage: "url(" + SPRITE_URL + ")",
+    // tint the white/gray sprite toward the site's terminal green
+    filter: "sepia(1) saturate(6) hue-rotate(55deg) brightness(0.88) drop-shadow(0 0 3px rgba(110,232,93,0.35))",
   });
   document.body.appendChild(el);
 
