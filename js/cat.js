@@ -1,13 +1,19 @@
 /* Easter egg: oneko, the classic pixel cat (sprite: CC0, github.com/adryd325/oneko.js).
-   Adapted from oneko.js — instead of chasing the mouse, this cat rests on the page
-   (sitting, licking, yawning, sleeping) and now and then wanders to a random spot
-   with proper directional run animations. Click it: meow + dash. */
+   Behavior:
+   - wanders the page and rests with real idle animations (licking, yawning, sleeping)
+   - click the cat: it meows and starts following your cursor
+   - click it again: it stops and goes back to wandering
+   - if you keep the cursor moving and it chases too long without catching you,
+     it gets tired, gives up ("zzz…") and takes a nap */
 (function () {
   const SPRITE_URL = "/assets/img/oneko.gif";
-  const WALK_SPEED = 10;  // px per 100ms tick (~100 px/s)
-  const DASH_SPEED = 22;
-  const REST_MIN_TICKS = 50;    // 5s minimum rest between wanders
-  const REST_RANGE_TICKS = 250; // up to +25s more
+  const WALK_SPEED = 10;   // px per 100ms tick while wandering
+  const CHASE_SPEED = 13;  // a touch faster when it's after your cursor
+  const REST_MIN_TICKS = 50;
+  const REST_RANGE_TICKS = 250;
+  const CATCH_DIST = 44;      // "caught you" radius while following
+  const EXHAUST_TICKS = 110;  // ~11s of continuous chasing -> nap
+  const NAP_REST_TICKS = 250; // how long it stays put after giving up
 
   const spriteSets = {
     idle: [[-3, -3]],
@@ -51,29 +57,26 @@
   let posY = window.innerHeight - 48;
   let targetX = posX;
   let targetY = posY;
-  let speed = WALK_SPEED;
   let frameCount = 0;
   let idleTime = 0;
   let idleAnimation = null;
   let idleAnimationFrame = 0;
-  let restTicks = 25; // first wander ~2.5s after load
+  let restTicks = 25;
 
   let mouseX = null;
   let mouseY = null;
-  let chasedMouse = false;
+  let following = false;
+  let chaseEffort = 0;
+
   document.addEventListener("mousemove", function (e) {
     mouseX = e.clientX;
     mouseY = e.clientY;
   });
 
+  function clampX(v) { return Math.min(Math.max(16, v), window.innerWidth - 16); }
+  function clampY(v) { return Math.min(Math.max(60, v), window.innerHeight - 16); }
+
   function pickTarget() {
-    // the cat investigates the mouse cursor at least once, then now and then
-    if (mouseX !== null && (!chasedMouse || Math.random() < 0.3)) {
-      chasedMouse = true;
-      targetX = Math.min(Math.max(16, mouseX), window.innerWidth - 16);
-      targetY = Math.min(Math.max(60, mouseY), window.innerHeight - 16);
-      return;
-    }
     targetX = 32 + Math.random() * Math.max(32, window.innerWidth - 96);
     targetY = 80 + Math.random() * Math.max(32, window.innerHeight - 160);
   }
@@ -124,15 +127,60 @@
     idleAnimationFrame += 1;
   }
 
+  function bubble(text) {
+    const b = document.createElement("div");
+    b.textContent = text;
+    Object.assign(b.style, {
+      position: "fixed",
+      left: posX - 16 + "px",
+      top: posY - 44 + "px",
+      zIndex: "6",
+      color: "var(--accent, #6ee85d)",
+      background: "rgba(14,21,17,0.95)",
+      border: "1px solid var(--border-bright, #2e4534)",
+      borderRadius: "6px",
+      padding: "2px 10px",
+      fontFamily: "inherit",
+      fontSize: "12px",
+      pointerEvents: "none",
+    });
+    document.body.appendChild(b);
+    setTimeout(function () { b.remove(); }, 1400);
+  }
+
+  function fallAsleep() {
+    following = false;
+    chaseEffort = 0;
+    targetX = posX;
+    targetY = posY;
+    restTicks = NAP_REST_TICKS;
+    idleTime = 20;
+    idleAnimation = "sleeping";
+    idleAnimationFrame = 0;
+    bubble("zzz…");
+  }
+
   function frame() {
     frameCount += 1;
+
+    if (following && mouseX !== null) {
+      targetX = clampX(mouseX);
+      targetY = clampY(mouseY);
+    }
+
     const diffX = posX - targetX;
     const diffY = posY - targetY;
     const distance = Math.sqrt(diffX * diffX + diffY * diffY);
+    const speed = following ? CHASE_SPEED : WALK_SPEED;
+    const arriveDist = following ? CATCH_DIST : Math.max(4, speed);
 
-    if (distance < speed || distance < 4) {
-      // arrived — rest here for a while, then pick somewhere new
-      speed = WALK_SPEED;
+    if (distance < arriveDist) {
+      if (following) {
+        // caught up — sit near the cursor and catch its breath
+        chaseEffort = Math.max(0, chaseEffort - 2);
+        idle();
+        return;
+      }
       restTicks -= 1;
       if (restTicks <= 0) {
         restTicks = REST_MIN_TICKS + Math.random() * REST_RANGE_TICKS;
@@ -141,6 +189,14 @@
       }
       idle();
       return;
+    }
+
+    if (following) {
+      chaseEffort += 1;
+      if (chaseEffort > EXHAUST_TICKS) {
+        fallAsleep();
+        return;
+      }
     }
 
     resetIdleAnimation();
@@ -171,34 +227,20 @@
     el.dataset.y = Math.round(posY);
   }
 
-  function meow() {
-    const bubble = document.createElement("div");
-    bubble.textContent = "meow~";
-    Object.assign(bubble.style, {
-      position: "fixed",
-      left: posX - 16 + "px",
-      top: posY - 44 + "px",
-      zIndex: "6",
-      color: "var(--accent, #6ee85d)",
-      background: "rgba(14,21,17,0.95)",
-      border: "1px solid var(--border-bright, #2e4534)",
-      borderRadius: "6px",
-      padding: "2px 10px",
-      fontFamily: "inherit",
-      fontSize: "12px",
-      pointerEvents: "none",
-    });
-    document.body.appendChild(bubble);
-    setTimeout(function () { bubble.remove(); }, 1200);
-
-    // startled: bolt somewhere else right now
-    speed = DASH_SPEED;
-    idleTime = 0;
-    resetIdleAnimation();
-    pickTarget();
-  }
-
-  el.addEventListener("click", meow);
+  el.addEventListener("click", function () {
+    if (!following) {
+      following = true;
+      chaseEffort = 0;
+      resetIdleAnimation();
+      bubble("meow~");
+    } else {
+      following = false;
+      targetX = posX;
+      targetY = posY;
+      restTicks = REST_MIN_TICKS + Math.random() * REST_RANGE_TICKS;
+      bubble("meow.");
+    }
+  });
 
   el.style.left = posX - 16 + "px";
   el.style.top = posY - 16 + "px";
