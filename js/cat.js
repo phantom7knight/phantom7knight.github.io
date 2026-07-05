@@ -1,113 +1,78 @@
-/* Easter egg: a semicolon cat that wanders around the page.
-   Click it and it meows, then bolts. Sits still for reduced-motion users. */
+/* Easter egg: a tiny cat that trots around the whole page.
+   Driven by requestAnimationFrame (not CSS transitions) so it moves even
+   when the OS reduced-motion setting is on. Click it: meow + dash. */
 (function () {
-  const FRAME_A = [
-    "   ;;      ;;",
-    "  ;;;;    ;;;;",
-    "  ;;;;;;;;;;;;",
-    " ;;  *    *  ;;",
-    " ;;    ;;    ;;",
-    "  ;;;      ;;;        ;;",
-    "   ;;;;;;;;;;;;;;;;  ;;",
-    "   ;;;;;;;;;;;;;;;;;;;",
-    "   ;;  ;;    ;;  ;;",
-    "  ;;;  ;;   ;;;  ;;",
-  ].join("\n");
-
-  const FRAME_B = [
-    "   ;;      ;;",
-    "  ;;;;    ;;;;",
-    "  ;;;;;;;;;;;;",
-    " ;;  *    *  ;;",
-    " ;;    ;;    ;;",
-    "  ;;;      ;;;     ;;",
-    "   ;;;;;;;;;;;;;;;; ;;",
-    "   ;;;;;;;;;;;;;;;;;;",
-    "   ;; ;;      ;; ;;",
-    "   ;; ;;;     ;; ;;;",
-  ].join("\n");
-
-  const SPEED = 45;          // px per second
-  const IDLE_MIN = 2500;     // ms between strolls
-  const IDLE_RANGE = 5000;
-  const START_DELAY = 4000;
+  const SIZE_PX = 20;
+  const WALK_SPEED = 70;   // px per second
+  const DASH_SPEED = 340;  // px per second when startled
+  const IDLE_MIN = 1500;   // ms sitting between strolls
+  const IDLE_RANGE = 4500;
+  const START_DELAY = 2500;
 
   const cat = document.createElement("div");
   cat.id = "ascii-cat";
+  cat.textContent = "🐈";
   cat.setAttribute("aria-hidden", "true");
-  cat.title = ";";
-  const pre = document.createElement("pre");
-  pre.textContent = FRAME_A;
-  cat.appendChild(pre);
-
   Object.assign(cat.style, {
     position: "fixed",
     left: "0",
     top: "0",
     zIndex: "5",
+    fontSize: SIZE_PX + "px",
+    lineHeight: "1",
     cursor: "pointer",
     userSelect: "none",
     willChange: "transform",
+    filter: "drop-shadow(0 0 4px rgba(110,232,93,0.45))",
   });
-  Object.assign(pre.style, {
-    margin: "0",
-    fontFamily: "inherit",
-    fontSize: "7px",
-    lineHeight: "1.1",
-    color: "var(--accent, #6ee85d)",
-    textShadow: "0 0 6px rgba(110,232,93,0.35)",
-    transition: "transform 0.2s",
-  });
-
   document.body.appendChild(cat);
 
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let x = window.innerWidth - 50;
+  let y = window.innerHeight - 50;
+  let tx = x, ty = y;
+  let speed = WALK_SPEED;
+  let idleUntil = performance.now() + START_DELAY;
+  let last = performance.now();
+  let bob = 0;
+  let facing = 1; // 🐈 faces left by default; scaleX(-1) faces right
 
-  let x = window.innerWidth - 140;
-  let y = window.innerHeight - 110;
-  let walkTimer = null;
-  let frameTimer = null;
-
-  function place(nx, ny, durationMs) {
-    cat.style.transition = durationMs ? "transform " + durationMs + "ms linear" : "none";
-    cat.style.transform = "translate3d(" + nx + "px," + ny + "px,0)";
+  function pickTarget() {
+    tx = 15 + Math.random() * Math.max(30, window.innerWidth - 15 - SIZE_PX * 2 - 15);
+    ty = 70 + Math.random() * Math.max(30, window.innerHeight - 70 - SIZE_PX * 2 - 15);
   }
 
-  function startFrames() {
-    stopFrames();
-    let flip = false;
-    frameTimer = setInterval(function () {
-      flip = !flip;
-      pre.textContent = flip ? FRAME_B : FRAME_A;
-    }, 350);
+  function render(offsetY) {
+    cat.style.transform =
+      "translate3d(" + x + "px," + (y + offsetY) + "px,0) scaleX(" + facing + ")";
+    cat.dataset.x = Math.round(x);
+    cat.dataset.y = Math.round(y);
   }
 
-  function stopFrames() {
-    if (frameTimer) { clearInterval(frameTimer); frameTimer = null; }
-    pre.textContent = FRAME_A;
-  }
+  function tick(now) {
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
 
-  function stroll() {
-    const w = cat.offsetWidth || 120;
-    const h = cat.offsetHeight || 90;
-    const maxX = Math.max(0, window.innerWidth - w - 10);
-    const maxY = Math.max(60, window.innerHeight - h - 10);
-    const nx = Math.random() * maxX;
-    const ny = 60 + Math.random() * (maxY - 60);
-    const dist = Math.hypot(nx - x, ny - y);
-    const dur = (dist / SPEED) * 1000;
+    const dx = tx - x;
+    const dy = ty - y;
+    const dist = Math.hypot(dx, dy);
 
-    // face the direction of travel
-    pre.style.transform = nx < x ? "scaleX(1)" : "scaleX(-1)";
+    if (dist > 1) {
+      // walking: step toward target with a little trot-bob
+      const step = Math.min(dist, speed * dt);
+      x += (dx / dist) * step;
+      y += (dy / dist) * step;
+      bob += dt * (speed > WALK_SPEED ? 30 : 16);
+      facing = dx < 0 ? 1 : -1;
+      render(Math.sin(bob) * 1.5);
+    } else if (now >= idleUntil) {
+      speed = WALK_SPEED;
+      idleUntil = now + IDLE_MIN + Math.random() * IDLE_RANGE;
+      pickTarget();
+    } else {
+      render(0); // sitting
+    }
 
-    startFrames();
-    place(nx, ny, dur);
-    x = nx; y = ny;
-
-    walkTimer = setTimeout(function () {
-      stopFrames();
-      walkTimer = setTimeout(stroll, IDLE_MIN + Math.random() * IDLE_RANGE);
-    }, dur);
+    requestAnimationFrame(tick);
   }
 
   function meow() {
@@ -115,8 +80,10 @@
     bubble.textContent = "meow~";
     Object.assign(bubble.style, {
       position: "fixed",
+      left: "0",
+      top: "0",
       zIndex: "6",
-      transform: "translate3d(" + (x + 20) + "px," + (y - 24) + "px,0)",
+      transform: "translate3d(" + (x - 8) + "px," + (y - 26) + "px,0)",
       color: "var(--accent, #6ee85d)",
       background: "rgba(14,21,17,0.95)",
       border: "1px solid var(--border-bright, #2e4534)",
@@ -129,33 +96,22 @@
     document.body.appendChild(bubble);
     setTimeout(function () { bubble.remove(); }, 1200);
 
-    if (reducedMotion) return;
-    // startled: bolt somewhere else immediately
-    if (walkTimer) { clearTimeout(walkTimer); walkTimer = null; }
-    const nx = Math.random() * Math.max(0, window.innerWidth - 140);
-    const ny = 60 + Math.random() * Math.max(60, window.innerHeight - 200);
-    const dur = (Math.hypot(nx - x, ny - y) / (SPEED * 4)) * 1000;
-    pre.style.transform = nx < x ? "scaleX(1)" : "scaleX(-1)";
-    startFrames();
-    place(nx, ny, dur);
-    x = nx; y = ny;
-    walkTimer = setTimeout(function () {
-      stopFrames();
-      walkTimer = setTimeout(stroll, IDLE_MIN + Math.random() * IDLE_RANGE);
-    }, dur);
+    // startled: dash somewhere else right now
+    speed = DASH_SPEED;
+    idleUntil = 0;
+    pickTarget();
   }
 
   cat.addEventListener("click", meow);
 
-  place(x, y, 0);
-
-  if (!reducedMotion) {
-    setTimeout(stroll, START_DELAY);
-  }
+  render(0);
+  requestAnimationFrame(function (now) { last = now; tick(now); });
 
   window.addEventListener("resize", function () {
-    x = Math.min(x, Math.max(0, window.innerWidth - 140));
-    y = Math.min(y, Math.max(60, window.innerHeight - 110));
-    place(x, y, 0);
+    x = Math.min(x, window.innerWidth - SIZE_PX * 2);
+    y = Math.min(y, window.innerHeight - SIZE_PX * 2);
+    tx = Math.min(tx, window.innerWidth - SIZE_PX * 2);
+    ty = Math.min(ty, window.innerHeight - SIZE_PX * 2);
+    render(0);
   });
 })();
