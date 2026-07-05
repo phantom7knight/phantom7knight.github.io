@@ -249,7 +249,15 @@ code, .kbd {
 }
 
 /* ---------- link list (socials) ---------- */
-.linkrow { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 16px 0; }
+.linkrow {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 8px 28px;
+  margin: 16px 0;
+}
+@media (max-width: 560px) {
+  .linkrow { grid-template-columns: 1fr; }
+}
 .linkrow a { color: var(--text-dim); }
 .linkrow a::before { content: "["; color: var(--border-bright); }
 .linkrow a::after { content: "]"; color: var(--border-bright); }
