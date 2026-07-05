@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fusion | Rohit Tolety</title>
+<meta name="description" content="Fusion — a rendering engine on D3D12 and Vulkan via NVRHI: deferred shading, material editor, mesh shaders.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="container">
+  <a class="brand" href="/">rohit@tolety:~$</a>
+  <div class="navlinks">
+    <a href="/projects/" aria-current="page">[projects]</a>
+    <a href="/presentations.html">[presentations]</a>
+    <a href="/cv.html">[cv]</a>
+    <a href="/about.html">[about]</a>
+  </div>
+</div></nav>
+
+<main><div class="container">
+
+  <p class="page-title">projects/<strong>fusion</strong></p>
+  <h1 class="headline">Fusion — rendering engine</h1>
+
+  <div class="tags">
+    <span class="tag">C++</span><span class="tag">D3D12</span><span class="tag">Vulkan</span>
+    <span class="tag">NVRHI</span><span class="tag">HLSL</span><span class="tag">ImGui</span>
+    <span class="tag">CMake</span><span class="tag">active development</span>
+  </div>
+
+  <p>Fusion is my current main project: a rendering engine written in modern C++ on top of
+  <a href="https://github.com/NVIDIA-RTX/NVRHI">NVRHI</a>, NVIDIA's rendering hardware
+  interface, which lets the same code target both Direct3D 12 and Vulkan. The goal is a
+  playground where I can implement rendering techniques properly — not just get them on
+  screen once, but build them into a reusable engine.</p>
+
+  <p>The engine is organized as a core library plus a set of applications, each one a
+  stepping stone: <code>Init</code> (windowing, first triangle, model loading),
+  <code>Deferred</code> (full deferred-shading pipeline), <code>MaterialsPlayground</code>
+  (interactive material editing) and <code>MeshShaders</code>.</p>
+
+  <h2>features</h2>
+  <ul class="bullets">
+    <li>Deferred shading with a full G-buffer — depth, diffuse, normals, specular and transmission targets.</li>
+    <li>Deferred lighting resolved in a compute shader rather than on the graphics pipeline.</li>
+    <li>PBR materials with transmission support (glass-like dragons below).</li>
+    <li>ImGui-based material editor for live-tweaking material parameters on loaded models.</li>
+    <li>Config-driven shader compilation pipeline (HLSL).</li>
+    <li>In progress: image-based lighting (IBL) — BRDF LUT, irradiance and prefiltered specular cubemaps.</li>
+  </ul>
+
+  <p><a class="btn" href="https://github.com/phantom7knight/Fusion">view source on github →</a></p>
+
+  <h2>screenshots</h2>
+  <div class="shots">
+    <figure class="wide">
+      <img src="/assets/img/fusion/deferred-final.png" alt="Final lit frame from the deferred renderer" loading="lazy">
+      <figcaption>deferred — final lit frame</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/fusion/deferred-diffuse.png" alt="G-buffer diffuse target" loading="lazy">
+      <figcaption>g-buffer: diffuse</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/fusion/deferred-normal.png" alt="G-buffer normals target" loading="lazy">
+      <figcaption>g-buffer: normals</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/fusion/deferred-specular.png" alt="G-buffer specular target" loading="lazy">
+      <figcaption>g-buffer: specular</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/fusion/deferred-depth.png" alt="G-buffer depth target" loading="lazy">
+      <figcaption>g-buffer: depth</figcaption>
+    </figure>
+    <figure class="wide">
+      <img src="/assets/img/fusion/deferred-transmission-dragon.png" alt="Transmissive dragon model rendered with the deferred pipeline" loading="lazy">
+      <figcaption>transmission material — dragon</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/fusion/material-editor.png" alt="Material editor UI" loading="lazy">
+      <figcaption>materials playground</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/fusion/material-editor-2.png" alt="Material editor with different material settings" loading="lazy">
+      <figcaption>live material tweaking</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/fusion/init-triangle.png" alt="First triangle rendered by the engine" loading="lazy">
+      <figcaption>where it all started — first triangle</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/fusion/init-model.png" alt="First model loaded by the engine" loading="lazy">
+      <figcaption>first model loaded</figcaption>
+    </figure>
+  </div>
+
+</div></main>
+
+<footer><div class="container">
+  <span>© 2026 Rohit Tolety</span>
+  <span>
+    <a href="https://github.com/phantom7knight">github</a> ·
+    <a href="https://www.linkedin.com/in/rohit-tolety/">linkedin</a> ·
+    <a href="https://www.youtube.com/channel/UCzNIuCprgIAGyRy3Z6lg63w">youtube</a> ·
+    <a href="mailto:mail2rohitolety@gmail.com">email</a>
+  </span>
+</div></footer>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projects | Rohit Tolety</title>
+<meta name="description" content="Graphics programming projects — rendering engines, ray tracing, shaders, games.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="container">
+  <a class="brand" href="/">rohit@tolety:~$</a>
+  <div class="navlinks">
+    <a href="/projects/" aria-current="page">[projects]</a>
+    <a href="/presentations.html">[presentations]</a>
+    <a href="/cv.html">[cv]</a>
+    <a href="/about.html">[about]</a>
+  </div>
+</div></nav>
+
+<main><div class="container">
+
+  <p class="page-title"><strong>projects</strong></p>
+  <h1 class="headline">ls ~/projects/</h1>
+
+  <div class="grid">
+    <a class="card" href="/projects/fusion.html">
+      <img src="/assets/img/fusion/deferred-final.png" alt="Fusion engine — deferred rendering final frame" loading="lazy">
+      <div class="card-body">
+        <h3>fusion</h3>
+        <p>Rendering engine on D3D12 &amp; Vulkan via NVRHI — deferred shading, material editor, mesh shaders. Active development.</p>
+        <div class="tags"><span class="tag">C++</span><span class="tag">D3D12</span><span class="tag">Vulkan</span><span class="tag">NVRHI</span><span class="tag">HLSL</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="/projects/vulkan-renderer.html">
+      <img src="/assets/img/vkrenderer/shaderball-brdf.png" alt="Vulkan renderer — shader ball with BRDF lighting" loading="lazy">
+      <div class="card-body">
+        <h3>vulkan_renderer</h3>
+        <p>First dive into the Vulkan API — textured model loading, BRDF lighting, ImGui tooling.</p>
+        <div class="tags"><span class="tag">Vulkan</span><span class="tag">C++</span><span class="tag">GLSL</span><span class="tag">ImGui</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="/projects/ray-tracer.html">
+      <img src="/assets/img/raytracer/rtonweekend-final.png" alt="Ray tracer — final render with many spheres" loading="lazy">
+      <div class="card-body">
+        <h3>ray_tracer</h3>
+        <p>CPU path tracer — progressive passes, depth of field, textures, reflection &amp; refraction.</p>
+        <div class="tags"><span class="tag">C++</span><span class="tag">Path tracing</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="/projects/graphics-engine.html">
+      <img src="/assets/img/particles/particles-2.png" alt="GPU particle system rendering millions of particles" loading="lazy">
+      <div class="card-body">
+        <h3>graphics_engine</h3>
+        <p>Solo OpenGL forward renderer — microfacet BRDF, bloom, and a 2M+ GPU particle system on compute shaders.</p>
+        <div class="tags"><span class="tag">OpenGL</span><span class="tag">C++</span><span class="tag">Compute</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="/projects/odyssey.html">
+      <img src="/assets/img/odyssey/screenshot-54.png" alt="Odyssey — endless runner gameplay" loading="lazy">
+      <div class="card-body">
+        <h3>odyssey</h3>
+        <p>Endless runner (DigiPen team game) — deferred pipeline, BRDF lighting, bloom; death-cam and slow-mo gameplay systems.</p>
+        <div class="tags"><span class="tag">C++</span><span class="tag">Custom engine</span><span class="tag">Gameplay</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="/projects/rect.html">
+      <img src="/assets/img/rect/rect-game-launcher-3-1-2019-7-07-36-pm.png" alt="RECT — in-game screenshot" loading="lazy">
+      <div class="card-body">
+        <h3>rect</h3>
+        <p>DigiPen team game — level design, BRDF lighting, gun/bullet mechanics, and an ImGui level editor.</p>
+        <div class="tags"><span class="tag">C++</span><span class="tag">Level design</span><span class="tag">ImGui</span></div>
+      </div>
+    </a>
+
+    <a class="card" href="/projects/shadertoy.html">
+      <video src="/assets/video/water-ripple.mp4" autoplay muted loop playsinline preload="metadata" aria-label="Water ripple shader animation"></video>
+      <div class="card-body">
+        <h3>shadertoy</h3>
+        <p>Fragment shader experiments — Mandelbrot zoom, water ripples, pulsating spheres, fake blur.</p>
+        <div class="tags"><span class="tag">GLSL</span><span class="tag">ShaderToy</span></div>
+      </div>
+    </a>
+  </div>
+
+</div></main>
+
+<footer><div class="container">
+  <span>© 2026 Rohit Tolety</span>
+  <span>
+    <a href="https://github.com/phantom7knight">github</a> ·
+    <a href="https://www.linkedin.com/in/rohit-tolety/">linkedin</a> ·
+    <a href="https://www.youtube.com/channel/UCzNIuCprgIAGyRy3Z6lg63w">youtube</a> ·
+    <a href="mailto:mail2rohitolety@gmail.com">email</a>
+  </span>
+</div></footer>
+
+</body>
+</html>

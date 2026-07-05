@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ray Tracer | Rohit Tolety</title>
+<meta name="description" content="A CPU path tracer — progressive rendering, depth of field, reflection and refraction.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="container">
+  <a class="brand" href="/">rohit@tolety:~$</a>
+  <div class="navlinks">
+    <a href="/projects/" aria-current="page">[projects]</a>
+    <a href="/presentations.html">[presentations]</a>
+    <a href="/cv.html">[cv]</a>
+    <a href="/about.html">[about]</a>
+  </div>
+</div></nav>
+
+<main><div class="container">
+
+  <p class="page-title">projects/<strong>ray_tracer</strong></p>
+  <h1 class="headline">Ray Tracer</h1>
+
+  <div class="tags">
+    <span class="tag">C++</span><span class="tag">Path tracing</span><span class="tag">CPU rendering</span>
+  </div>
+
+  <p>A CPU ray tracer written in C++, in the spirit of the classic
+  <em>Ray Tracing in One Weekend</em> series — spheres, materials and a camera, traced one
+  bounce at a time until an image falls out.</p>
+
+  <p>It renders progressively: the passes accumulate over time, so the image starts noisy
+  and converges — the 500-pass vs 1500-pass comparisons below show the cleanup. Along the
+  way it picked up textured materials, camera depth of field, and dielectrics with both
+  reflection and refraction.</p>
+
+  <p><a class="btn" href="https://github.com/phantom7knight/RayTracer">view source on github →</a></p>
+
+  <h2>renders</h2>
+  <div class="shots">
+    <figure class="wide">
+      <img src="/assets/img/raytracer/rtonweekend-final.png" alt="Final scene with many random spheres" loading="lazy">
+      <figcaption>final scene — one weekend later</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/raytracer/500-passes-with-dof.png" alt="Render after 500 passes with depth of field" loading="lazy">
+      <figcaption>500 passes + depth of field</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/raytracer/1500-passes.png" alt="Render after 1500 passes" loading="lazy">
+      <figcaption>1500 passes — converged</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/raytracer/1500-passes-with-tex-and-dof.png" alt="1500 passes with textures and depth of field" loading="lazy">
+      <figcaption>1500 passes + textures + dof</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/raytracer/reflection.png" alt="Reflective spheres" loading="lazy">
+      <figcaption>reflection</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/raytracer/refraction.png" alt="Refractive glass sphere" loading="lazy">
+      <figcaption>refraction</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/raytracer/1.png" alt="Early render output" loading="lazy">
+      <figcaption>early days: first spheres</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/raytracer/2.png" alt="Early render with normals" loading="lazy">
+      <figcaption>early days: normals debug</figcaption>
+    </figure>
+  </div>
+
+</div></main>
+
+<footer><div class="container">
+  <span>© 2026 Rohit Tolety</span>
+  <span>
+    <a href="https://github.com/phantom7knight">github</a> ·
+    <a href="https://www.linkedin.com/in/rohit-tolety/">linkedin</a> ·
+    <a href="https://www.youtube.com/channel/UCzNIuCprgIAGyRy3Z6lg63w">youtube</a> ·
+    <a href="mailto:mail2rohitolety@gmail.com">email</a>
+  </span>
+</div></footer>
+
+</body>
+</html>

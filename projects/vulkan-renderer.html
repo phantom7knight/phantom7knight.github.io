@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vulkan Renderer | Rohit Tolety</title>
+<meta name="description" content="A first renderer built on the Vulkan API — textured models, BRDF lighting, ImGui tooling.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="container">
+  <a class="brand" href="/">rohit@tolety:~$</a>
+  <div class="navlinks">
+    <a href="/projects/" aria-current="page">[projects]</a>
+    <a href="/presentations.html">[presentations]</a>
+    <a href="/cv.html">[cv]</a>
+    <a href="/about.html">[about]</a>
+  </div>
+</div></nav>
+
+<main><div class="container">
+
+  <p class="page-title">projects/<strong>vulkan_renderer</strong></p>
+  <h1 class="headline">Vulkan Renderer</h1>
+
+  <div class="tags">
+    <span class="tag">Vulkan</span><span class="tag">C++</span><span class="tag">GLSL</span><span class="tag">ImGui</span>
+  </div>
+
+  <p>My first attempt at building a renderer with the Vulkan API, written to understand how
+  the API actually works under the hood — the swapchain, synchronization, descriptor sets,
+  all of it, by hand.</p>
+
+  <p>The renderer loads textured models and exposes their settings through an ImGui-based
+  UI. Lighting progressed from a classic Phong model to a microfacet BRDF — the
+  old-vs-updated screenshots below show that jump. The longer-term idea was to grow it into
+  a shader prototyping tool: write GLSL, see the result on a model immediately.</p>
+
+  <p><a class="btn" href="https://github.com/phantom7knight/VulkanRenderer">view source on github →</a></p>
+
+  <h2>screenshots</h2>
+  <div class="shots">
+    <figure class="wide">
+      <img src="/assets/img/vkrenderer/shaderball-brdf.png" alt="Shader ball rendered with microfacet BRDF" loading="lazy">
+      <figcaption>shader ball — microfacet BRDF</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/vkrenderer/old-phong.png" alt="Early Phong lighting" loading="lazy">
+      <figcaption>before: Phong</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/vkrenderer/updated-brdf.png" alt="Updated BRDF lighting" loading="lazy">
+      <figcaption>after: microfacet BRDF</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/vkrenderer/brdf-1.png" alt="BRDF render, view 1" loading="lazy">
+      <figcaption>brdf — roughness response</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/vkrenderer/brdf-2.png" alt="BRDF render, view 2" loading="lazy">
+      <figcaption>brdf — metallic response</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/vkrenderer/modelloading.png" alt="Textured model loaded in the renderer" loading="lazy">
+      <figcaption>textured model loading</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/vkrenderer/modelwithui.png" alt="Model with ImGui settings panel" loading="lazy">
+      <figcaption>model + ImGui settings</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/vkrenderer/imgui-ui.png" alt="ImGui debug UI" loading="lazy">
+      <figcaption>imgui debug UI</figcaption>
+    </figure>
+  </div>
+
+  <h2>references</h2>
+  <ul class="bullets">
+    <li><a href="https://vulkan-tutorial.com/Overview">vulkan-tutorial.com</a></li>
+    <li><a href="https://github.com/SaschaWillems/Vulkan">Sascha Willems — Vulkan examples</a></li>
+    <li><a href="https://developer.nvidia.com/Vulkan">NVIDIA Vulkan developer resources</a></li>
+  </ul>
+
+</div></main>
+
+<footer><div class="container">
+  <span>© 2026 Rohit Tolety</span>
+  <span>
+    <a href="https://github.com/phantom7knight">github</a> ·
+    <a href="https://www.linkedin.com/in/rohit-tolety/">linkedin</a> ·
+    <a href="https://www.youtube.com/channel/UCzNIuCprgIAGyRy3Z6lg63w">youtube</a> ·
+    <a href="mailto:mail2rohitolety@gmail.com">email</a>
+  </span>
+</div></footer>
+
+</body>
+</html>

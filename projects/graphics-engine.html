@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Graphics Engine | Rohit Tolety</title>
+<meta name="description" content="A solo OpenGL forward renderer — microfacet BRDF, bloom, and a GPU particle system.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="container">
+  <a class="brand" href="/">rohit@tolety:~$</a>
+  <div class="navlinks">
+    <a href="/projects/" aria-current="page">[projects]</a>
+    <a href="/presentations.html">[presentations]</a>
+    <a href="/cv.html">[cv]</a>
+    <a href="/about.html">[about]</a>
+  </div>
+</div></nav>
+
+<main><div class="container">
+
+  <p class="page-title">projects/<strong>graphics_engine</strong></p>
+  <h1 class="headline">Graphics Engine (OpenGL)</h1>
+
+  <div class="tags">
+    <span class="tag">OpenGL</span><span class="tag">C++</span><span class="tag">Compute shaders</span>
+    <span class="tag">Solo project</span>
+  </div>
+
+  <p>A solo forward-rendering engine built with OpenGL and C++ — the project where I first
+  went deep on physically based lighting and GPU compute.</p>
+
+  <h2>features</h2>
+  <ul class="bullets">
+    <li>Forward renderer with a microfacet BRDF lighting model.</li>
+    <li>Bloom post-processing with Gaussian blur.</li>
+    <li>GPU particle system driven by compute shaders — 2&nbsp;million+ particles on screen.</li>
+  </ul>
+
+  <h2>screenshots</h2>
+  <div class="shots">
+    <figure class="wide">
+      <img src="/assets/img/particles/particles-2.png" alt="GPU particle system with millions of particles" loading="lazy">
+      <figcaption>2M+ particles, compute-driven</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/particles/particles-1.png" alt="GPU particle system" loading="lazy">
+      <figcaption>particle system</figcaption>
+    </figure>
+    <figure>
+      <img src="/assets/img/bloom/bloom-1.png" alt="Bloom post-processing effect" loading="lazy">
+      <figcaption>bloom + gaussian blur</figcaption>
+    </figure>
+  </div>
+
+</div></main>
+
+<footer><div class="container">
+  <span>© 2026 Rohit Tolety</span>
+  <span>
+    <a href="https://github.com/phantom7knight">github</a> ·
+    <a href="https://www.linkedin.com/in/rohit-tolety/">linkedin</a> ·
+    <a href="https://www.youtube.com/channel/UCzNIuCprgIAGyRy3Z6lg63w">youtube</a> ·
+    <a href="mailto:mail2rohitolety@gmail.com">email</a>
+  </span>
+</div></footer>
+
+</body>
+</html>

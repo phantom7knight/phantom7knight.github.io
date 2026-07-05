@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rohit Tolety — Graphics Programmer</title>
+<meta name="description" content="Rohit Tolety — game, graphics and tools programmer. Rendering engines, D3D12/Vulkan, shaders.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/theme.css">
+</head>
+<body>
+
+<nav class="topnav"><div class="container">
+  <a class="brand" href="/">rohit@tolety:~$</a>
+  <div class="navlinks">
+    <a href="/projects/">[projects]</a>
+    <a href="/presentations.html">[presentations]</a>
+    <a href="/cv.html">[cv]</a>
+    <a href="/about.html">[about]</a>
+  </div>
+</div></nav>
+
+<main><div class="container">
+
+  <div class="terminal">
+    <div class="terminal-bar">
+      <span></span><span></span><span></span>
+      <span class="terminal-title">rohit@tolety: ~</span>
+    </div>
+    <div class="terminal-body" id="term-body"></div>
+  </div>
+
+  <script type="application/json" id="term-script">
+  [
+    {"cmd": "whoami",
+     "out": ["Rohit Tolety — Game / Graphics / Tools Programmer"]},
+    {"cmd": "cat current_work.txt",
+     "out": ["Building <a href='https://github.com/phantom7knight/Fusion'>Fusion</a> — a rendering engine on D3D12 &amp; Vulkan (NVRHI)"]},
+    {"cmd": "ls skills/",
+     "out": ["c++  hlsl  glsl  d3d12  vulkan  opengl  imgui  renderdoc"]},
+    {"cmd": "./connect --all",
+     "out": ["<a href='https://github.com/phantom7knight'>github</a>&nbsp;&nbsp;<a href='https://www.linkedin.com/in/rohit-tolety/'>linkedin</a>&nbsp;&nbsp;<a href='https://www.youtube.com/channel/UCzNIuCprgIAGyRy3Z6lg63w'>youtube</a>&nbsp;&nbsp;<a href='mailto:mail2rohitolety@gmail.com'>email</a>"]}
+  ]
+  </script>
+
+  <h2>featured_projects</h2>
+  <div class="grid">
+    <a class="card" href="/projects/fusion.html">
+      <img src="/assets/img/fusion/deferred-final.png" alt="Fusion engine — deferred rendering final frame" loading="lazy">
+      <div class="card-body">
+        <h3>fusion</h3>
+        <p>Rendering engine on D3D12 &amp; Vulkan via NVRHI — deferred shading, material editor, mesh shaders.</p>
+        <div class="tags"><span class="tag">C++</span><span class="tag">D3D12</span><span class="tag">Vulkan</span><span class="tag">HLSL</span></div>
+      </div>
+    </a>
+    <a class="card" href="/projects/vulkan-renderer.html">
+      <img src="/assets/img/vkrenderer/shaderball-brdf.png" alt="Vulkan renderer — shader ball with BRDF lighting" loading="lazy">
+      <div class="card-body">
+        <h3>vulkan_renderer</h3>
+        <p>First dive into the Vulkan API — textured model loading, BRDF lighting, ImGui tooling.</p>
+        <div class="tags"><span class="tag">Vulkan</span><span class="tag">C++</span><span class="tag">GLSL</span></div>
+      </div>
+    </a>
+    <a class="card" href="/projects/ray-tracer.html">
+      <img src="/assets/img/raytracer/rtonweekend-final.png" alt="Ray tracer — final render with many spheres" loading="lazy">
+      <div class="card-body">
+        <h3>ray_tracer</h3>
+        <p>CPU path tracer — progressive passes, depth of field, reflection &amp; refraction.</p>
+        <div class="tags"><span class="tag">C++</span><span class="tag">Path tracing</span></div>
+      </div>
+    </a>
+  </div>
+  <p><a href="/projects/">ls projects/ --all →</a></p>
+
+</div></main>
+
+<footer><div class="container">
+  <span>© 2026 Rohit Tolety</span>
+  <span>
+    <a href="https://github.com/phantom7knight">github</a> ·
+    <a href="https://www.linkedin.com/in/rohit-tolety/">linkedin</a> ·
+    <a href="https://www.youtube.com/channel/UCzNIuCprgIAGyRy3Z6lg63w">youtube</a> ·
+    <a href="mailto:mail2rohitolety@gmail.com">email</a>
+  </span>
+</div></footer>
+
+<script src="/js/terminal.js" defer></script>
+</body>
+</html>
