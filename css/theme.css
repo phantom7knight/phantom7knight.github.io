@@ -16,6 +16,34 @@
   --mono: "JetBrains Mono", Consolas, "Courier New", monospace;
 }
 
+/* ---------- light green theme (light bg, green terminal identity kept) ---------- */
+[data-theme="light-green"] {
+  --bg: #eef7ec;
+  --bg-panel: #ffffff;
+  --bg-raised: #e2f0de;
+  --border: #cfe4c8;
+  --border-bright: #9dc78f;
+  --text: #16241a;
+  --text-dim: #4d6350;
+  --accent: #1f7a34;
+  --accent-soft: #155a26;
+  --accent-glow: rgba(31, 122, 52, 0.12);
+}
+
+/* ---------- plain light theme ---------- */
+[data-theme="light"] {
+  --bg: #fafafa;
+  --bg-panel: #ffffff;
+  --bg-raised: #f0f0f2;
+  --border: #dedee2;
+  --border-bright: #c3c3ca;
+  --text: #17181c;
+  --text-dim: #565861;
+  --accent: #1f7a34;
+  --accent-soft: #155a26;
+  --accent-glow: rgba(31, 122, 52, 0.10);
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
@@ -259,10 +287,20 @@ code, .kbd {
 @media (max-width: 560px) {
   .linkrow { grid-template-columns: 1fr; }
 }
-.linkrow a { color: var(--text-dim); }
-.linkrow a::before { content: "["; color: var(--border-bright); }
-.linkrow a::after { content: "]"; color: var(--border-bright); }
-.linkrow a:hover { color: var(--accent); text-decoration: none; }
+.linkrow a {
+  color: var(--accent-soft);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-color: var(--border-bright);
+  text-underline-offset: 3px;
+}
+.linkrow a::before { content: "["; color: var(--border-bright); text-decoration: none; }
+.linkrow a::after { content: "]"; color: var(--border-bright); text-decoration: none; }
+.linkrow a:hover {
+  color: var(--accent);
+  text-decoration-style: solid;
+  text-decoration-color: var(--accent);
+}
 
 /* ---------- skill table (cv) ---------- */
 table.skills { border-collapse: collapse; width: 100%; margin: 14px 0 22px; }
