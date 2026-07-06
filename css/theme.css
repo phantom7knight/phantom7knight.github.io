@@ -107,8 +107,13 @@ main { padding: 48px 0 64px; }
   font-weight: 400;
   margin-bottom: 6px;
 }
-.page-title::before { content: "// "; }
 .page-title strong { color: var(--accent); font-weight: 700; }
+.page-title .back {
+  color: var(--accent);
+  text-decoration: none;
+  margin-right: 6px;
+}
+.page-title .back:hover { text-shadow: 0 0 10px var(--accent-glow); }
 
 h1.headline {
   font-size: 1.6rem;
@@ -133,15 +138,6 @@ ul.bullets li::marker { color: var(--accent); }
 
 hr { border: 0; border-top: 1px solid var(--border); margin: 32px 0; }
 
-/* ---------- back link (breadcrumb up one level) ---------- */
-.back {
-  display: inline-block;
-  color: var(--accent);
-  font-size: 0.9rem;
-  margin-bottom: 18px;
-}
-.back::before { content: "\2190  "; }
-.back:hover { text-decoration: none; text-shadow: 0 0 10px var(--accent-glow); }
 
 code, .kbd {
   background: var(--bg-raised);
