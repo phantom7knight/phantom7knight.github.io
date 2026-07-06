@@ -51,20 +51,25 @@
 
   <h2>featured_projects</h2>
   <div class="grid">
+    <a class="card" href="/projects/video-games.html">
+      <div class="cycle-thumb">
+        <img src="/assets/img/games/r6s.png" class="on" alt="Rainbow Six Siege" loading="lazy">
+        <img src="/assets/img/games/forza.png" alt="Forza Motorsport" loading="lazy">
+        <img src="/assets/img/games/beyond-blue.png" alt="Beyond Blue" loading="lazy">
+        <img src="/assets/img/games/heartland.jpg" alt="The Division Heartland" loading="lazy">
+      </div>
+      <div class="card-body">
+        <h3>video_games</h3>
+        <p>Shipped titles I've worked on as a tools/graphics engineer — Rainbow Six Siege, The Division Heartland, Forza Motorsport, Beyond Blue.</p>
+        <div class="tags"><span class="tag">Ubisoft</span><span class="tag">Turn 10 Studios</span><span class="tag">Shipped</span></div>
+      </div>
+    </a>
     <a class="card" href="/projects/fusion.html">
       <img src="/assets/img/fusion/deferred-final.png" alt="Fusion engine — deferred rendering final frame" loading="lazy">
       <div class="card-body">
         <h3>fusion</h3>
         <p>Rendering engine on D3D12 &amp; Vulkan via NVRHI — deferred shading, material editor, mesh shaders.</p>
         <div class="tags"><span class="tag">C++</span><span class="tag">D3D12</span><span class="tag">Vulkan</span><span class="tag">HLSL</span></div>
-      </div>
-    </a>
-    <a class="card" href="/projects/vulkan-renderer.html">
-      <img src="/assets/img/vkrenderer/brdf-1.png" alt="Vulkan renderer — BRDF roughness response" loading="lazy">
-      <div class="card-body">
-        <h3>vulkan_renderer</h3>
-        <p>First dive into the Vulkan API — textured model loading, BRDF lighting, ImGui tooling.</p>
-        <div class="tags"><span class="tag">Vulkan</span><span class="tag">C++</span><span class="tag">GLSL</span></div>
       </div>
     </a>
     <a class="card" href="/projects/ray-tracer.html">
@@ -92,6 +97,7 @@
 
 <script src="/js/terminal.js" defer></script>
 <script src="/js/theme.js" defer></script>
+<script src="/js/thumbs.js" defer></script>
 <script src="/js/cat.js" defer></script>
 </body>
 </html>
