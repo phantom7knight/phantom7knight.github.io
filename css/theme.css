@@ -179,11 +179,16 @@ code, .kbd {
   margin-left: 8px; color: var(--text-dim); font-size: 0.8rem;
 }
 
-.terminal-body { padding: 20px 22px 24px; min-height: 220px; }
-.terminal-body .t-line { white-space: pre-wrap; word-break: break-word; }
+.terminal-body { padding: 24px 24px 28px; min-height: 220px; line-height: 1.9; }
+.terminal-body .t-line { white-space: pre-wrap; word-break: break-word; margin-bottom: 8px; }
+.terminal-body .t-line:has(.t-prompt):not(:first-child) {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
 .terminal-body .t-prompt { color: var(--accent); }
 .terminal-body .t-cmd { color: var(--text); }
-.terminal-body .t-out { color: var(--text-dim); }
+.terminal-body .t-out { color: var(--text-dim); margin-bottom: 4px; }
 .terminal-body .t-out a { color: var(--accent); }
 .terminal-body .hl { color: var(--accent-soft); font-weight: 700; }
 
